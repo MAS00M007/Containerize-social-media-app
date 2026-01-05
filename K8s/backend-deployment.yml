@@ -14,9 +14,28 @@ spec:
     spec:
       containers:
         - name: backend
-          image: masoom007/mern-backend:v1
+          image: masoom007/mern-backend:v2
           ports:
             - containerPort: 3001
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3001
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3001
+            initialDelaySeconds: 10
+            periodSeconds: 5
           envFrom:
             - secretRef:
                 name: backend-secret  
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"      
