@@ -31,7 +31,9 @@ spec:
             periodSeconds: 5
           envFrom:
             - secretRef:
-                name: backend-secret  
+                name: backend-secret
+            - configMapRef:
+                name: backend-config     
           resources:
             requests:
               memory: "128Mi"
