@@ -1,0 +1,31 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kube-state-metrics
+rules:
+  # Core resources
+  - apiGroups: [""]
+    resources:
+      - pods
+      - nodes
+      - namespaces
+      - services
+      - endpoints
+      - persistentvolumes
+      - persistentvolumeclaims
+    verbs: ["list", "watch"]
+
+  # Workloads
+  - apiGroups: ["apps"]
+    resources:
+      - deployments
+      - daemonsets
+      - statefulsets
+      - replicasets
+    verbs: ["list", "watch"]
+
+  # Policy resources (this fixes your PDB error)
+  - apiGroups: ["policy"]
+    resources:
+      - poddisruptionbudgets
+    verbs: ["list", "watch"]

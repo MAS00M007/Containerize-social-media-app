@@ -89,12 +89,8 @@ const Form = () => {
     onSubmitProps.resetForm();
 
     if (loggedIn) {
-      dispatch(
-        setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
-      );
+      dispatch(setLogin({ user: loggedIn.user, token: loggedIn.token }));
+      localStorage.setItem("token", loggedIn.token);
       navigate("/home");
     }
   };

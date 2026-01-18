@@ -7,6 +7,7 @@ import multer from "multer";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
+import client from "prom-client";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
@@ -19,8 +20,10 @@ import Post from "./models/Post.js";
 import { users, posts } from "./data/index.js";
 
 /* CONFIGURATIONS */
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+client.collectDefaultMetrics();
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -43,14 +46,31 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 /* ROUTES WITH FILES */
-app.post("/auth/register", upload.single("picture"), register);
-app.post("/posts", verifyToken, upload.single("picture"), createPost);
+app.post("/api/auth/register", upload.single("picture"), register);
+app.post("/api/posts", verifyToken, upload.single("picture"), createPost);
 
 /* ROUTES */
-app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
-app.use("/posts", postRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
+
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
+app.get("/metrics", async (req, res) => {
+  try {
+    res.setHeader("Content-Type", client.register.contentType);
+    const metrics = await client.register.metrics();
+    res.end(metrics);
+  } catch (err) {
+    res.status(500).end(err.message);
+  }
+});
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 6001;
