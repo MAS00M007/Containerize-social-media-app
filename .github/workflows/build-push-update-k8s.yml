@@ -41,8 +41,8 @@ jobs:
 
       - name: Update Kubernetes Manifests
         run: |
-          sed -i "s|image: .*mern-backend:.*|image: $IMAGE_BACKEND:$TAG|" k8s/backend-deployment.yml
-          sed -i "s|image: .*mern-nginx:.*|image: $IMAGE_FRONTEND:$TAG|" k8s/frontend-deployment.yml
+          sed -i "s|image: .*mern-backend:.*|image: $IMAGE_BACKEND:$TAG|" K8s/backend-deployment.yml
+          sed -i "s|image: .*mern-nginx:.*|image: $IMAGE_FRONTEND:$TAG|" K8s/frontend-deployment.yml
 
       - name: Commit and Push Updated Manifests
         run: |
