@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: masoom007/mern-nginx:release-1768720645
+          image: masoom007/mern-nginx:release-1768721207
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
