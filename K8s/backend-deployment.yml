@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: masoom007/mern-backend:v3
+          image: masoom007/mern-backend:release-1768720645
           ports:
             - containerPort: 3001
           livenessProbe:
